@@ -5,7 +5,7 @@ SOL = sol
 SRC = src
 
 CXX = g++
-CPPFLAGS = -g -c -std=c++11 -I$(INC)
+CPPFLAGS = -O2 -g -c -std=c++11 -I$(INC)
 
 # ************ Compilacion de los Programas ************
 
