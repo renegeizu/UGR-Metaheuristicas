@@ -14,24 +14,24 @@ color='\033[0;34m'
 #Se crean los directorios "vacios" si no existen
 if [ -d $bin ];
 then
-	echo "${color}Directorio 'bin' listo${nocolor}"
+	echo -e "${color}Directorio 'bin' listo${nocolor}"
 else
 	mkdir $bin
-	echo "${color}Directorio 'bin' creado${nocolor}"
+	echo -e "${color}Directorio 'bin' creado${nocolor}"
 fi
 if [ -d $obj ];
 then
-	echo "${color}Directorio 'obj' listo${nocolor}"
+	echo -e "${color}Directorio 'obj' listo${nocolor}"
 else
 	mkdir $obj
-	echo "${color}Directorio 'obj' creado${nocolor}"
+	echo -e "${color}Directorio 'obj' creado${nocolor}"
 fi
 if [ -d $soluciones ];
 then
-	echo "${color}Directorio 'sol' listo${nocolor}"
+	echo -e "${color}Directorio 'sol' listo${nocolor}"
 else
 	mkdir $soluciones
-	echo "${color}Directorio 'sol' creado${nocolor}"
+	echo -e "${color}Directorio 'sol' creado${nocolor}"
 fi
 
 #Usa make clean para limpiar
