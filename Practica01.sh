@@ -35,7 +35,7 @@ else
 fi
 
 #Usa make clean para limpiar
-echo -e "${color}Limpiando los Directorios...\n${nocolor}"
+echo -e "\n${color}Limpiando los Directorios...\n${nocolor}"
 make clean
 
 #Compila el codigo
@@ -49,19 +49,19 @@ cd $bin
 #Los resultados se almacenan en 'sol'
 echo -e "\n${color}Ejecutando Ozone para 1NN...\n${nocolor}"
 $bin/ClasificadorKNN 1 1 0 >> $soluciones/"Ozone 1NN"
-echo -e "\n${color}Ejecutando Ozone para BL...\n${nocolor}"
+echo -e "${color}Ejecutando Ozone para BL...\n${nocolor}"
 $bin/ClasificadorKNN 1 2 0 >> $soluciones/"Ozone BL"
-echo -e "\n${color}Ejecutando Ozone para RELIEF...\n${nocolor}"
+echo -e "${color}Ejecutando Ozone para RELIEF...\n${nocolor}"
 $bin/ClasificadorKNN 1 3 0 >> $soluciones/"Ozone RELIEF"
-echo -e "\n${color}Ejecutando Parkinsons para 1NN...\n${nocolor}"
+echo -e "${color}Ejecutando Parkinsons para 1NN...\n${nocolor}"
 $bin/ClasificadorKNN 2 1 0 >> $soluciones/"Parkinsons 1NN"
-echo -e "\n${color}Ejecutando Parkinsons para BL...\n${nocolor}"
+echo -e "${color}Ejecutando Parkinsons para BL...\n${nocolor}"
 $bin/ClasificadorKNN 2 2 0 >> $soluciones/"Parkinsons BL"
-echo -e "\n${color}Ejecutando Parkinsons para RELIEF...\n${nocolor}"
+echo -e "${color}Ejecutando Parkinsons para RELIEF...\n${nocolor}"
 $bin/ClasificadorKNN 2 3 0 >> $soluciones/"Parkinsons RELIEF"
-echo -e "\n${color}Ejecutando Spectf-Heart para 1NN...\n${nocolor}"
+echo -e "${color}Ejecutando Spectf-Heart para 1NN...\n${nocolor}"
 $bin/ClasificadorKNN 3 1 0 >> $soluciones/"Spectf-Heart 1NN"
-echo -e "\n${color}Ejecutando Spectf-Heart para BL...\n${nocolor}"
+echo -e "${color}Ejecutando Spectf-Heart para BL...\n${nocolor}"
 $bin/ClasificadorKNN 3 2 0 >> $soluciones/"Spectf-Heart BL"
-echo -e "\n${color}Ejecutando Spectf-Heart para RELIEF...\n${nocolor}"
+echo -e "${color}Ejecutando Spectf-Heart para RELIEF...\n${nocolor}"
 $bin/ClasificadorKNN 3 3 0 >> $soluciones/"Spectf-Heart RELIEF"
