@@ -262,7 +262,7 @@ int main(int argc, char* argv[]){
 				Temporizador temp;
 				pesosAux = pesos;
 				cout << "----------------------------------------------" << endl;
-				cout << "Comienzo del procesamiento de la" << endl << "particion " << i << ":" << endl;
+				cout << "Comienzo del procesamiento de la" << endl << "particion " << i+1 << ":" << endl;
 				temp.start();
 				Relief(conjuntoDatos.getParticionTrain(i+1), conjuntoDatos.getDatos(), conjuntoDatos.getEtiquetas(), pesosAux);
 				temp.stop();
