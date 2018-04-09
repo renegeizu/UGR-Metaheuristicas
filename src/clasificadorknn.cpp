@@ -243,14 +243,14 @@ int main(int argc, char* argv[]){
 				tasaMedia += tasa;
 				int pesosDescartados = 0;
 				for(int j = 0; j < pesosAux.size(); ++j){
-					if(pesosAux[i] < 0.2){
+					if(pesosAux[j] < 0.2){
 						pesosDescartados++;
 					}
 				}
 				double tasaReduccion = (float)100.0 * ((float)pesosDescartados/(float)pesosAux.size());
 				cout << "\tPorcentaje Acierto: " << tasa << "%" << endl;
 				cout << "\tTiempo Ejecucion: " << temp.getTime() << " seg." << endl;
-				cout << "\tTasa Reduccion: 0%" << endl;
+				cout << "\tTasa Reduccion: " << tasaReduccion << "%" << endl;
 				cout << "\tAgregacion: " << (float)0.5 * (float)tasa + (float)0.5 * (float)tasaReduccion << " % " << endl;
 			}
 			break;
