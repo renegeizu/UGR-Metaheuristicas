@@ -13,7 +13,7 @@ float euclideanDistance(const vector<float> &train, const vector<float> &test, c
 	return sqrt(distance);
 }
 
-float KNN(const vector<int> &train, const vector<int> &test, vector<vector<float>> matrixData, vector<int> vectorLabel, const vector<float> &weights, float limit){
+float KNN_Train(const vector<int> &train, const vector<int> &test, vector<vector<float>> matrixData, vector<int> vectorLabel, const vector<float> &weights, float limit){
 	int success = 0, label = vectorLabel[0], trainSize = train.size(), testSize = test.size();
 	float distance = 0.0, minDistance;
 	for(int i = 0; i < trainSize; ++i){
@@ -25,6 +25,25 @@ float KNN(const vector<int> &train, const vector<int> &test, vector<vector<float
 					minDistance = distance;
 					label = vectorLabel[test[j]];
 				}
+			}
+		}
+		if(label == vectorLabel[train[i]]){
+			success++;
+		}
+	}
+	return (100.0 * (success * (1.0/trainSize)));
+}
+
+float KNN_Test(const vector<int> &train, const vector<int> &test, vector<vector<float>> matrixData, vector<int> vectorLabel, const vector<float> &weights, float limit){
+	int success = 0, label = vectorLabel[0], trainSize = train.size(), testSize = test.size();
+	float distance = 0.0, minDistance;
+	for(int i = 0; i < trainSize; ++i){
+		minDistance = 999999;
+		for(int j = 0; j < testSize; ++j){
+			distance = euclideanDistance(matrixData[train[i]], matrixData[test[j]], weights, limit);
+			if(distance < minDistance){
+				minDistance = distance;
+				label = vectorLabel[test[j]];
 			}
 		}
 		if(label == vectorLabel[train[i]]){

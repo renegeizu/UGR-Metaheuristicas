@@ -21,19 +21,20 @@ void LocalSearch(const vector<int> &train, const vector<vector<float>> matrixDat
 	iota(index.begin(), index.end(), 0);
 	vector<float> actualSolW(weights.begin(), weights.end()), newSolW(weights.begin(), weights.end());
 	float actualSol = -999999, newSol = -999999;
-	actualSol = KNN(train, train, matrixData, vectorLabel, actualSolW, 0.2);
+	actualSol = KNN_Train(train, train, matrixData, vectorLabel, actualSolW, 0.2);
 	while(evaluations < 15000 && neighbours < generatedNeighbours){
 		random_shuffle(index.begin(), index.end());
 		improvement = false;
 		for(int i = 0; i < weightsSize && !improvement; ++i){
 			neighboursGeneration(newSolW, index[i]);
 			neighbours++;
-			newSol =  KNN(train, train, matrixData, vectorLabel, newSolW, 0.2);
+			newSol =  KNN_Train(train, train, matrixData, vectorLabel, newSolW, 0.2);
 			evaluations++;
 			if(newSol > actualSol){
 				actualSol = newSol;
 				actualSolW = newSolW;
 				improvement = true;
+				neighbours = 0;
 			}
 		}
 	}

@@ -1,15 +1,28 @@
 BIN = bin
 INC = include
+LIB = lib
 OBJ = obj
 SOL = sol
 SRC = src
+
+ARCH = $(shell getconf LONG_BIT)
+ifeq ($(ARCH), 32)
+  LIBPATH = $(LIB)/lib
+else
+  LIBPATH = $(LIB)/lib64
+endif
+
+XLSFLAGS = -std=c++11 -I $(LIB)/include_cpp -L $(LIBPATH) -lxl -Wl,-rpath,$(LIBPATH)
 
 CXX = g++
 CPPFLAGS = -O3 -g -c -std=c++11 -I$(INC)
 
 # ************ Compilacion de los Programas ************
 
-all: $(BIN)/ClasificadorKNN
+all: $(BIN)/ClasificadorKNN $(BIN)/XLSparser
+
+$(BIN)/XLSparser: $(SRC)/xlsparser.cpp
+	$(CXX) -o $(BIN)/XLSparser $(SRC)/xlsparser.cpp $(XLSFLAGS)
 
 $(BIN)/ClasificadorKNN: $(OBJ)/clasificadorknn.o $(OBJ)/clasificador.o $(OBJ)/datos.o $(OBJ)/generador.o $(OBJ)/localsearch.o $(OBJ)/relief.o $(OBJ)/temporizador.o
 	$(CXX) $(OBJ)/clasificadorknn.o $(OBJ)/clasificador.o $(OBJ)/datos.o $(OBJ)/generador.o $(OBJ)/localsearch.o $(OBJ)/relief.o $(OBJ)/temporizador.o -o $(BIN)/ClasificadorKNN
@@ -41,4 +54,4 @@ $(OBJ)/temporizador.o: $(SRC)/temporizador.cpp $(INC)/temporizador.h
 
 clean:
 	$(info "Limpiando...")
-	rm -f $(OBJ)/* $(BIN)/* $(SOL)/*
+	rm -f $(OBJ)/* $(BIN)/* $(SOL)/*.txt

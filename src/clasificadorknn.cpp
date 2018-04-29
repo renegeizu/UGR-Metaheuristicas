@@ -1,4 +1,5 @@
 #include <clasificador.h>
+#include <cstdlib>
 #include <datos.h>
 #include <generador.h>
 #include <iostream>
@@ -181,25 +182,26 @@ int main(int argc, char* argv[]){
 	}else{
 		getFromTerminal(opcionArchivo, opcionAlgoritmo, semilla);
 	}
+	srand(semilla);
 	Set_random(semilla);
 	Datos conjuntoDatos;
 	switch(opcionArchivo){
 		case 1:{
 			cout << "----------------------------------------------" << endl;
 			cout << "Leyendo, normalizando y particionando datos Ozone..." << endl;
-			conjuntoDatos.leerDatos("../data/ozone-320.arff");
+			conjuntoDatos.leerDatos("data/ozone-320.arff");
 			break;
 		}
 		case 2:{
 			cout << "----------------------------------------------" << endl;
 			cout << "Leyendo, normalizando y particionando datos Parkinsons..." << endl;
-			conjuntoDatos.leerDatos("../data/parkinsons.arff");
+			conjuntoDatos.leerDatos("data/parkinsons.arff");
 			break;
 		}
 		case 3:{
 			cout << "----------------------------------------------" << endl;
 			cout << "Leyendo, normalizando y particionando datos Spectf-Heart..." << endl;
-			conjuntoDatos.leerDatos("../data/spectf-heart.arff");
+			conjuntoDatos.leerDatos("data/spectf-heart.arff");
 			break;
 		}
 	}
@@ -212,14 +214,14 @@ int main(int argc, char* argv[]){
 				cout << "----------------------------------------------" << endl;
 				cout << "Comienzo del procesamiento de la" << endl << "particion " << i+1 << ":" << endl;
 				temp.start();
-				tasa = KNN(conjuntoDatos.getParticionTrain(i+1), conjuntoDatos.getParticionTest(i+1), conjuntoDatos.getDatos(), conjuntoDatos.getEtiquetas(), pesos);
+				tasa = KNN_Test(conjuntoDatos.getParticionTrain(i+1), conjuntoDatos.getParticionTest(i+1), conjuntoDatos.getDatos(), conjuntoDatos.getEtiquetas(), pesos);
 				temp.stop();
 				tMedio += temp.getTime();
 				tasaMedia += tasa;
 				cout << "\tPorcentaje Acierto: " << tasa << "%" << endl;
 				cout << "\tTiempo Ejecucion: " << temp.getTime() << " seg." << endl;
 				cout << "\tTasa Reduccion: 0%" << endl;
-				cout << "\tAgregacion: " << (float)0.5 * (float)tasa << " % " << endl;
+				cout << "\tAgregacion: " << (float)0.5 * (float)tasa << "%" << endl;
 			}
 			break;
 		}
@@ -238,7 +240,7 @@ int main(int argc, char* argv[]){
 				temp.start();
 				LocalSearch(conjuntoDatos.getParticionTrain(i+1), conjuntoDatos.getDatos(), conjuntoDatos.getEtiquetas(), vecinosGenerados, pesosAux);
 				temp.stop();
-				tasa = KNN(conjuntoDatos.getParticionTrain(i+1), conjuntoDatos.getParticionTest(i+1), conjuntoDatos.getDatos(), conjuntoDatos.getEtiquetas(), pesosAux, 0.2);
+				tasa = KNN_Test(conjuntoDatos.getParticionTrain(i+1), conjuntoDatos.getParticionTest(i+1), conjuntoDatos.getDatos(), conjuntoDatos.getEtiquetas(), pesosAux, 0.2);
 				tMedio += temp.getTime();
 				tasaMedia += tasa;
 				int pesosDescartados = 0;
@@ -251,7 +253,7 @@ int main(int argc, char* argv[]){
 				cout << "\tPorcentaje Acierto: " << tasa << "%" << endl;
 				cout << "\tTiempo Ejecucion: " << temp.getTime() << " seg." << endl;
 				cout << "\tTasa Reduccion: " << tasaReduccion << "%" << endl;
-				cout << "\tAgregacion: " << (float)0.5 * (float)tasa + (float)0.5 * (float)tasaReduccion << " % " << endl;
+				cout << "\tAgregacion: " << (float)0.5 * (float)tasa + (float)0.5 * (float)tasaReduccion << "%" << endl;
 			}
 			break;
 		}
@@ -266,13 +268,13 @@ int main(int argc, char* argv[]){
 				temp.start();
 				Relief(conjuntoDatos.getParticionTrain(i+1), conjuntoDatos.getDatos(), conjuntoDatos.getEtiquetas(), pesosAux);
 				temp.stop();
-				tasa = KNN(conjuntoDatos.getParticionTrain(i+1), conjuntoDatos.getParticionTest(i+1), conjuntoDatos.getDatos(), conjuntoDatos.getEtiquetas(), pesosAux);
+				tasa = KNN_Test(conjuntoDatos.getParticionTrain(i+1), conjuntoDatos.getParticionTest(i+1), conjuntoDatos.getDatos(), conjuntoDatos.getEtiquetas(), pesosAux);
 				tMedio += temp.getTime();
 				tasaMedia += tasa;
 				cout << "\tPorcentaje Acierto: " << tasa << "%" << endl;
 				cout << "\tTiempo Ejecucion: " << temp.getTime() << " seg." << endl;
-				cout << "\tTasa Reduccion: 0% " << endl;
-				cout << "\tAgregacion: " << (float)0.5 * (float)tasa << " %" << endl;
+				cout << "\tTasa Reduccion: 0%" << endl;
+				cout << "\tAgregacion: " << (float)0.5 * (float)tasa << "%" << endl;
 			}
 			break;
 		}

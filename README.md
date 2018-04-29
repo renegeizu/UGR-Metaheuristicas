@@ -11,7 +11,7 @@ Directorios
 + data: Conjuntos de Datos
 + include: Ficheros .h
 + obj: Ficheros .o
-+ sol: Ficheros con los Resultados
++ sol: Ficheros con los Resultados // Tablas .xls
 + src: Codigo fuente .cpp
 
 
