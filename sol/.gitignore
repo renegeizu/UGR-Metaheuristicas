@@ -3,3 +3,4 @@
 
 # ...excepto el fichero .gitignore
 !.gitignore
+!Tablas.xls
