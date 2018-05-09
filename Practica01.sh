@@ -42,9 +42,6 @@ make clean
 echo -e "\n${color}Compilando en Codigo...\n${nocolor}"
 make
 
-#Se mueve a la carpeta bin
-#cd $bin
-
 #Se lanzan las ejecuciones de la Practica 01
 #Los resultados se almacenan en 'sol'
 echo -e "\n${color}Ejecutando Ozone para 1NN...\n${nocolor}"
@@ -65,9 +62,6 @@ echo -e "${color}Ejecutando Spectf-Heart para BL...\n${nocolor}"
 $bin/ClasificadorKNN 3 2 0 >> $soluciones/"Spectf-Heart BL.txt"
 echo -e "${color}Ejecutando Spectf-Heart para RELIEF...\n${nocolor}"
 $bin/ClasificadorKNN 3 3 0 >> $soluciones/"Spectf-Heart RELIEF.txt"
-
-#Se mueve al directorio raiz
-#cd ..
 
 #Se lanzan las ejecuciones de XLSparser
 #Los resultados se almacenan en 'sol', en un fichero .xls
