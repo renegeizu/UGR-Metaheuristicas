@@ -1,5 +1,5 @@
 Clasificador KNN C++
-==========
+=======================
 
 Clasificador KNN (1NN) con Busqueda Local y Greedy Relief
 
@@ -31,20 +31,20 @@ Uso del Ejecutable - XLSparser
 
 
 Formato del Archivo de Parametros
---------------------
+------------------------------------
 
 + archivo algoritmo semilla
 
 
 Uso del Archivo Makefile
---------------------
+---------------------------
 
 + Compilar el codigo fuente: make
 + Limpiar archivos de compilacion: make clean
 
 
 Uso del Archivo Practica01.sh
---------------------
+--------------------------------
 
 + ./Practica01.sh
 

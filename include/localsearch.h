@@ -8,8 +8,25 @@
 
 using namespace std;
 
-void calibrateWeights(vector<float> &weights);
-void neighboursGeneration(vector<float> &weights, const int &component);
-void LocalSearch(const vector<int> &train, const vector<vector<float>> matrixData, const vector<int> vectorLabel, const int &generatedNeighbours, vector<float> &weights);
+class LocalSearch{
+	private:
+		vector<vector<float>> matrixData;
+		vector<int> vectorLabel;
+		float limit;
+		void neighboursGeneration(vector<float> &weights, const int &component);
+		float reduction(const vector<float> &weights);
+	public:
+		LocalSearch();
+		LocalSearch(vector<vector<float>> matrixData, vector<int> vectorLabel);
+		LocalSearch(vector<vector<float>> matrixData, vector<int> vectorLabel, float limit);
+		void run(const vector<int> &train, const int &generatedNeighbours, vector<float> &weights);
+		void runnable(const vector<int> &train, const int &generatedNeighbours, vector<float> &weights);
+		void setMatrixData(vector<vector<float>> matrixData);
+		void setVectorLabel(vector<int> vectorLabel);
+		void setLimit(float limit);
+		vector<vector<float>> getMatrixData();
+		vector<int> getVectorLabel();
+		float getLimit();
+};
 
 #endif

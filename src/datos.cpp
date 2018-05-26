@@ -1,79 +1,5 @@
 #include <datos.h>
 
-using namespace std;
-
-Datos::Datos(){
-	clearData();
-}
-
-vector<int> Datos::getParticionTest(int index){
-	switch(index){
-		case 1:
-			return test1;
-			break;
-		case 2:
-			return test2;
-			break;
-		case 3:
-			return test3;
-			break;
-		case 4:
-			return test4;
-			break;
-		case 5:
-			return test5;
-			break;
-		default:
-			return test1;
-			break;
-	}
-}
-
-vector<int> Datos::getParticionTrain(int index){
-	switch(index){
-		case 1:
-			return train1;
-			break;
-		case 2:
-			return train2;
-			break;
-		case 3:
-			return train3;
-			break;
-		case 4:
-			return train4;
-			break;
-		case 5:
-			return train5;
-			break;
-		default:
-			return train1;
-			break;
-	}
-}
-
-vector<vector<float>> Datos::getDatos(){
-	return matrixData;
-}
-vector<int> Datos::getEtiquetas(){
-	return vectorLabel;
-}
-
-int Datos::getTamAtributos(){
-	return matrixData[0].size();
-}
-
-int Datos::getTamDatos(){
-	return matrixData.size();
-}
-
-void Datos::leerDatos(string path){
-	clearData();
-	readData(path);
-	normalizeData();
-	partitionData();
-}
-
 void Datos::clearData(){
 	matrixData.clear();
 	vectorLabel.clear();
@@ -243,4 +169,81 @@ void Datos::readData(string path){
 		getline(file, row, ',');
 	}
 	file.close();
+}
+
+Datos::Datos(){
+	clearData();
+}
+
+Datos::Datos(string path){
+	clearData();
+	setData(path);
+}
+
+vector<int> Datos::getPartitionTest(int index){
+	switch(index){
+		case 0:
+			return test1;
+			break;
+		case 1:
+			return test2;
+			break;
+		case 2:
+			return test3;
+			break;
+		case 3:
+			return test4;
+			break;
+		case 4:
+			return test5;
+			break;
+		default:
+			return test1;
+			break;
+	}
+}
+
+vector<int> Datos::getPartitionTrain(int index){
+	switch(index){
+		case 0:
+			return train1;
+			break;
+		case 1:
+			return train2;
+			break;
+		case 2:
+			return train3;
+			break;
+		case 3:
+			return train4;
+			break;
+		case 4:
+			return train5;
+			break;
+		default:
+			return train1;
+			break;
+	}
+}
+
+vector<vector<float>> Datos::getData(){
+	return matrixData;
+}
+vector<int> Datos::getLabels(){
+	return vectorLabel;
+}
+
+int Datos::getAttributeSize(){
+	return matrixData[0].size();
+}
+
+int Datos::getDataSize(){
+	return matrixData.size();
+}
+
+void Datos::setData(string path){
+	clearData();
+	readData(path);
+	normalizeData();
+	partitionData();
 }

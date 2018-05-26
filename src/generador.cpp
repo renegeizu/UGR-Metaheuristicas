@@ -1,27 +1,29 @@
 #include <generador.h>
 
-unsigned long Seed = 0L;
-
-#define MASK 2147483647
-#define PRIME 65539
-#define SCALE 0.4656612875e-9
-
-unsigned long Get_random (void){
-	return Seed;
+Generador::Generador(){
+	this->Seed = 0L;
 }
 
-float Rand(void){
-    return ((Seed = ((Seed * PRIME) & MASK)) * SCALE );
+Generador::Generador(unsigned long Seed){
+	this->Seed = Seed;
 }
 
-float Randfloat(float low, float high){
-	return (low + (high-(low))*Rand());
+unsigned long Generador::get(){
+	return this->Seed;
 }
 
-int Randint(int low, int high){
-    return (int) (low + (high-(low)+1) * Rand());
+void Generador::set(unsigned long x){
+	this->Seed = (unsigned long) x;
 }
 
-void Set_random(unsigned long x){
-	Seed = (unsigned long) x;
+float Generador::rand(){
+    return ((this->Seed = ((this->Seed * PRIME) & MASK)) * SCALE);
+}
+
+float Generador::randFloat(float low, float high){
+	return (low + (high - (low)) * rand());
+}
+
+int Generador::randInt(int low, int high){
+    return (int) (low + (high - (low) + 1) * rand());
 }

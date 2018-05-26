@@ -24,15 +24,15 @@ all: $(BIN)/ClasificadorKNN $(BIN)/XLSparser
 $(BIN)/XLSparser: $(SRC)/xlsparser.cpp
 	$(CXX) -o $(BIN)/XLSparser $(SRC)/xlsparser.cpp $(XLSFLAGS)
 
-$(BIN)/ClasificadorKNN: $(OBJ)/clasificadorknn.o $(OBJ)/clasificador.o $(OBJ)/datos.o $(OBJ)/generador.o $(OBJ)/localsearch.o $(OBJ)/relief.o $(OBJ)/temporizador.o
-	$(CXX) $(OBJ)/clasificadorknn.o $(OBJ)/clasificador.o $(OBJ)/datos.o $(OBJ)/generador.o $(OBJ)/localsearch.o $(OBJ)/relief.o $(OBJ)/temporizador.o -o $(BIN)/ClasificadorKNN
+$(BIN)/ClasificadorKNN: $(OBJ)/clasificadorknn.o $(OBJ)/clasificador.o $(OBJ)/datos.o $(OBJ)/generador.o $(OBJ)/localsearch.o $(OBJ)/buffer.o $(OBJ)/relief.o $(OBJ)/temporizador.o
+	$(CXX) $(OBJ)/clasificadorknn.o $(OBJ)/clasificador.o $(OBJ)/datos.o $(OBJ)/generador.o $(OBJ)/localsearch.o $(OBJ)/buffer.o $(OBJ)/relief.o $(OBJ)/temporizador.o -o $(BIN)/ClasificadorKNN
 
 # ************ Creacion de Objetos ************
 
 $(OBJ)/clasificador.o: $(SRC)/clasificador.cpp $(INC)/clasificador.h
 	$(CXX) $(CPPFLAGS) $(SRC)/clasificador.cpp -o $(OBJ)/clasificador.o
 
-$(OBJ)/clasificadorknn.o: $(SRC)/clasificadorknn.cpp $(INC)/clasificador.h $(INC)/datos.h $(INC)/generador.h $(INC)/localsearch.h $(INC)/relief.h $(INC)/temporizador.h
+$(OBJ)/clasificadorknn.o: $(SRC)/clasificadorknn.cpp $(INC)/clasificador.h $(INC)/datos.h $(INC)/generador.h $(INC)/localsearch.h $(INC)/buffer.h $(INC)/relief.h $(INC)/temporizador.h
 	$(CXX) $(CPPFLAGS) $(SRC)/clasificadorknn.cpp -o $(OBJ)/clasificadorknn.o
 
 $(OBJ)/datos.o: $(SRC)/datos.cpp $(INC)/datos.h
@@ -43,6 +43,9 @@ $(OBJ)/generador.o: $(SRC)/generador.cpp $(INC)/generador.h
 
 $(OBJ)/localsearch.o: $(SRC)/localsearch.cpp $(INC)/localsearch.h
 	$(CXX) $(CPPFLAGS) $(SRC)/localsearch.cpp -o $(OBJ)/localsearch.o
+
+$(OBJ)/buffer.o: $(SRC)/buffer.cpp $(INC)/buffer.h
+	$(CXX) $(CPPFLAGS) $(SRC)/buffer.cpp -o $(OBJ)/buffer.o
 
 $(OBJ)/relief.o: $(SRC)/relief.cpp $(INC)/relief.h
 	$(CXX) $(CPPFLAGS) $(SRC)/relief.cpp -o $(OBJ)/relief.o
