@@ -3,7 +3,7 @@
 default_random_engine normalGen;
 normal_distribution<double> normalDist(0.0, 0.3);
 
-void EnfriamientoSimulado::neighboursGeneration(vector<float> &weights, const int &component){
+void EnfriamientoSimulado::neighboursGeneration(vector<float> &weights, const int component){
 	weights[component] += normalDist(normalGen);
 	if(weights[component] > 1){
 		weights[component] = 1;
@@ -67,15 +67,15 @@ void EnfriamientoSimulado::run(const vector<int> &train, vector<float> &initSol,
 	tStart = (mu * agregacion) / -(log(phi));
 	beta = (tStart - tEnd) / (maxCooling * tStart * tEnd);
 	while((numCooling < maxCooling) && (actualSuccess > 0)){
-		actualSuccess = 0;
-		for(i = 0; (i < maxNeighbours) && (actualSuccess < maxSuccess); i++){
+		actualSuccess = 1;
+		for(i = 0; i < maxNeighbours && (actualSuccess < maxSuccess); i++){
 			newSol = actualSol;
 			componentMutate = aleatorio.randInt(0, numCharact-1);
 			neighboursGeneration(newSol, componentMutate);
 			KNN.Train(train, train, newSol, classificationRate, reductionRate, newSolCost);
 			randomNum = aleatorio.rand();
 			difference = newSolCost - actualSolCost;
-			if(difference > 0 || randomNum <= exp((-difference)/(tStart*i))){
+			if(difference > 0){
 				actualSol = newSol;
 				actualSolCost = newSolCost;
 				actualSuccess++;
@@ -83,6 +83,8 @@ void EnfriamientoSimulado::run(const vector<int> &train, vector<float> &initSol,
 					bestSol = actualSol;
 					bestSolCost = actualSolCost;
 				}
+			}else if(randomNum <= exp((-difference)/(tStart*i))){
+
 			}
 		}
  		tStart = tStart / (1.0 + (beta * tStart));

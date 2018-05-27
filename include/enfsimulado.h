@@ -6,6 +6,8 @@
 #include <random>
 #include <vector>
 
+#include <iostream>
+
 #define MAX_EVALS 15000
 
 using namespace std;
@@ -16,7 +18,7 @@ class EnfriamientoSimulado{
 		vector<int> vectorLabel;
 		float limit, alpha;
 		Generador aleatorio;
-		void neighboursGeneration(vector<float> &weights, const int &component);
+		void neighboursGeneration(vector<float> &weights, const int component);
 	public:
 		EnfriamientoSimulado();
 		EnfriamientoSimulado(vector<vector<float>> matrixData, vector<int> vectorLabel);

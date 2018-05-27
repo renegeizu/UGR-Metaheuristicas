@@ -123,11 +123,11 @@ int main(int argc, char* argv[]){
 			break;
 		}
 		case 4:{
-			EnfriamientoSimulado SA(conjuntoDatos.getData(), conjuntoDatos.getLabels(), 0.2, semilla);
+			EnfriamientoSimulado SA(conjuntoDatos.getData(), conjuntoDatos.getLabels(), 0.2, 0.5, semilla);
 			vector<float> pesos, pesosAux;
 			float tasa, tasaReduccion, tasaAgregacion;
 			for(int i = 0; i < conjuntoDatos.getAttributeSize(); ++i){
-				pesos.push_back(aleatorio.randFloat(0.0, 1.0));
+				pesos.push_back(aleatorio.rand());
 			}
 			float mu = 0.3 , phi = 0.3;
 			for(int i = 0; i < 5; ++i){
