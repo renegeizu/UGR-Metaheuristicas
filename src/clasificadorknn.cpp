@@ -1,7 +1,9 @@
 #include <clasificador.h>
 #include <cstdlib>
 #include <datos.h>
+#include <enfsimulado.h>
 #include <generador.h>
+#include <ils.h>
 #include <iostream>
 #include <localsearch.h>
 #include <buffer.h>
@@ -51,7 +53,7 @@ int main(int argc, char* argv[]){
 			break;
 		}
 	}
-	Clasificador KNN(conjuntoDatos.getData(), conjuntoDatos.getLabels(), 0.2);
+	Clasificador KNN(conjuntoDatos.getData(), conjuntoDatos.getLabels(), 0.2, 0.5);
 	switch(opcionAlgoritmo){
 		case 1:{
 			vector<float> pesos(conjuntoDatos.getAttributeSize(), 1.0);
@@ -73,9 +75,9 @@ int main(int argc, char* argv[]){
 			break;
 		}
 		case 2:{
-			LocalSearch LS(conjuntoDatos.getData(), conjuntoDatos.getLabels(), 0.2);
+			LocalSearch LS(conjuntoDatos.getData(), conjuntoDatos.getLabels(), 0.2, 0.5);
 			vector<float> pesos, pesosAux;
-			float tasa;
+			float tasa, tasaReduccion, tasaAgregacion;
 			for(int i = 0; i < conjuntoDatos.getAttributeSize(); ++i){
 				pesos.push_back(aleatorio.randFloat(0.0, 1.0));
 			}
@@ -86,22 +88,15 @@ int main(int argc, char* argv[]){
 				cout << "----------------------------------------------" << endl;
 				cout << "Comienzo del procesamiento de la" << endl << "particion " << i+1 << ":" << endl;
 				temp.start();
-				LS.runnable(conjuntoDatos.getPartitionTrain(i), vecinosGenerados, pesosAux);
+				LS.run(conjuntoDatos.getPartitionTrain(i), vecinosGenerados, pesosAux);
 				temp.stop();
-				tasa = KNN.Test(conjuntoDatos.getPartitionTrain(i), conjuntoDatos.getPartitionTest(i), pesosAux);
+				KNN.Test(conjuntoDatos.getPartitionTrain(i), conjuntoDatos.getPartitionTest(i), pesosAux, tasa, tasaReduccion, tasaAgregacion);
 				tMedio += temp.getTime();
 				tasaMedia += tasa;
-				int pesosDescartados = 0;
-				for(int j = 0; j < pesosAux.size(); ++j){
-					if(pesosAux[j] < 0.2){
-						pesosDescartados++;
-					}
-				}
-				double tasaReduccion = (float)100.0 * ((float)pesosDescartados/(float)pesosAux.size());
 				cout << "\tPorcentaje Acierto: " << tasa << "%" << endl;
 				cout << "\tTiempo Ejecucion: " << temp.getTime() << " seg." << endl;
 				cout << "\tTasa Reduccion: " << tasaReduccion << "%" << endl;
-				cout << "\tAgregacion: " << (float)0.5 * (float)tasa + (float)0.5 * (float)tasaReduccion << "%" << endl;
+				cout << "\tAgregacion: " << tasaAgregacion << "%" << endl;
 			}
 			break;
 		}
@@ -124,6 +119,65 @@ int main(int argc, char* argv[]){
 				cout << "\tTiempo Ejecucion: " << temp.getTime() << " seg." << endl;
 				cout << "\tTasa Reduccion: 0%" << endl;
 				cout << "\tAgregacion: " << (float)0.5 * (float)tasa << "%" << endl;
+			}
+			break;
+		}
+		case 4:{
+			EnfriamientoSimulado SA(conjuntoDatos.getData(), conjuntoDatos.getLabels(), 0.2, semilla);
+			vector<float> pesos, pesosAux;
+			float tasa;
+			for(int i = 0; i < conjuntoDatos.getAttributeSize(); ++i){
+				pesos.push_back(aleatorio.randFloat(0.0, 1.0));
+			}
+			float mu = 0.3 , phi = 0.3;
+			for(int i = 0; i < 5; ++i){
+				Temporizador temp;
+				pesosAux = pesos;
+				cout << "----------------------------------------------" << endl;
+				cout << "Comienzo del procesamiento de la" << endl << "particion " << i+1 << ":" << endl;
+				temp.start();
+				SA.run(conjuntoDatos.getPartitionTrain(i), pesosAux, mu, phi);
+				temp.stop();
+				tasa = KNN.Test(conjuntoDatos.getPartitionTrain(i), conjuntoDatos.getPartitionTest(i), pesosAux);
+				tMedio += temp.getTime();
+				tasaMedia += tasa;
+				int pesosDescartados = 0;
+				for(int j = 0; j < pesosAux.size(); ++j){
+					if(pesosAux[j] < 0.2){
+						pesosDescartados++;
+					}
+				}
+				double tasaReduccion = (float)100.0 * ((float)pesosDescartados/(float)pesosAux.size());
+				cout << "\tPorcentaje Acierto: " << tasa << "%" << endl;
+				cout << "\tTiempo Ejecucion: " << temp.getTime() << " seg." << endl;
+				cout << "\tTasa Reduccion: " << tasaReduccion << "%" << endl;
+				cout << "\tAgregacion: " << (float)0.5 * (float)tasa + (float)0.5 * (float)tasaReduccion << "%" << endl;
+			}
+			break;
+		}
+		case 5:{
+			IteratedLocalSearch ILoalSearch(conjuntoDatos.getData(), conjuntoDatos.getLabels(), 0.2, 0.5, semilla);
+			vector<float> pesos, pesosAux;
+			float tasa, tasaReduccion, tasaAgregacion;
+			for(int i = 0; i < conjuntoDatos.getAttributeSize(); ++i){
+				pesos.push_back(aleatorio.randFloat(0.0, 1.0));
+			}
+			for(int i = 0; i < 5; ++i){
+				Temporizador temp;
+				pesosAux = pesos;
+				cout << "----------------------------------------------" << endl;
+				cout << "Comienzo del procesamiento de la" << endl << "particion " << i+1 << ":" << endl;
+				int vecinosGenerados = 20 * (conjuntoDatos.getAttributeSize());
+				temp.start();
+				ILoalSearch.run(conjuntoDatos.getPartitionTrain(i), pesosAux, vecinosGenerados);
+				temp.stop();
+				KNN.Test(conjuntoDatos.getPartitionTrain(i), conjuntoDatos.getPartitionTest(i), pesosAux, tasa, tasaReduccion, tasaAgregacion);
+				tMedio += temp.getTime();
+				tasaMedia += tasa;
+				cout << "\tPorcentaje Acierto: " << tasa << "%" << endl;
+				cout << "\tTiempo Ejecucion: " << temp.getTime() << " seg." << endl;
+				cout << "\tTasa Reduccion: " << tasaReduccion << "%" << endl;
+				cout << "\tAgregacion: " << tasaAgregacion << "%" << endl;
 			}
 			break;
 		}

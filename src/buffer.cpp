@@ -12,7 +12,7 @@ void Buffer::printDataSetError(){
 }
 
 bool Buffer::validateAlgorithm(int optionAlgorithm){
-	return (optionAlgorithm != 1 && optionAlgorithm != 2 && optionAlgorithm != 3);
+	return (optionAlgorithm != 1 && optionAlgorithm != 2 && optionAlgorithm != 3 && optionAlgorithm != 4 && optionAlgorithm != 5);
 }
 
 void Buffer::printAlgorithmError(){
@@ -20,6 +20,8 @@ void Buffer::printAlgorithmError(){
 	cout << "1 -> 1-NN" << endl;
 	cout << "2 -> Busqueda Local" << endl;
 	cout << "3 -> Greedy Relief" << endl;
+	cout << "4 -> Enfriamiento Simulado" << endl;
+	cout << "5 -> ILS" << endl;
 }
 
 void Buffer::printDataSet(int optionFile){
@@ -57,6 +59,16 @@ void Buffer::printAlgorithm(int optionAlgorithm){
 		case 3:{
 			cout << "----------------------------------------------" << endl;
 			cout << "Algoritmo: Greedy Relief" << endl;
+			break;
+		}
+		case 4:{
+			cout << "----------------------------------------------" << endl;
+			cout << "Algoritmo: Enfriamiento Simulado" << endl;
+			break;
+		}
+		case 5:{
+			cout << "----------------------------------------------" << endl;
+			cout << "Algoritmo: ILS" << endl;
 			break;
 		}
 	}
@@ -132,6 +144,8 @@ void Buffer::getFromTerminal(int &optionFile, int &optionAlgorithm, unsigned lon
 		cout << "\tOpcion 1 -> 1-NN" << endl;
 		cout << "\tOpcion 2 -> Busqueda Local" << endl;
 		cout << "\tOpcion 3 -> Greedy Relief" << endl;
+		cout << "\tOpcion 4 -> Enfriamiento Simulado" << endl;
+		cout << "\tOpcion 5 -> ILS" << endl;
 		cin >> optionAlgorithm;
 	}
 	cout << "----------------------------------------------" << endl;

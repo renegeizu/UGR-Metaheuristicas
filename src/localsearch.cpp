@@ -1,7 +1,5 @@
 #include <localsearch.h>
 
-using namespace std;
-
 default_random_engine normalGenerator;
 normal_distribution<double> normalDistribution(0.0, 0.3);
 
@@ -28,77 +26,64 @@ LocalSearch::LocalSearch(){
 	this->matrixData.clear();
 	this->vectorLabel.clear();
 	this->limit = 0.0;
+	this->alpha = 0.0;
 }
 
 LocalSearch::LocalSearch(vector<vector<float>> matrixData, vector<int> vectorLabel){
 	this->matrixData = matrixData;
 	this->vectorLabel = vectorLabel;
 	this->limit = 0.0;
+	this->alpha = 0.0;
 }
 
 LocalSearch::LocalSearch(vector<vector<float>> matrixData, vector<int> vectorLabel, float limit){
 	this->matrixData = matrixData;
 	this->vectorLabel = vectorLabel;
 	this->limit = limit;
+	this->alpha = 0.0;
+}
+
+LocalSearch::LocalSearch(vector<vector<float>> matrixData, vector<int> vectorLabel, float limit, float alpha){
+	this->matrixData = matrixData;
+	this->vectorLabel = vectorLabel;
+	this->limit = limit;
+	this->alpha = alpha;
 }
 
 void LocalSearch::run(const vector<int> &train, const int &generatedNeighbours, vector<float> &weights){
-	Clasificador KNN(matrixData, vectorLabel, limit);
+	float tasa;	
+	run(train, generatedNeighbours, weights, tasa);
+}
+
+void LocalSearch::run(const vector<int> &train, const int &generatedNeighbours, vector<float> &weights, float rate){
+	Clasificador KNN(matrixData, vectorLabel, limit, alpha);
 	int neighbours = 0, evaluations = 0, weightsSize = weights.size();
 	bool improvement = false;
 	vector<int> index(weightsSize, 0);
 	iota(index.begin(), index.end(), 0);
 	vector<float> actualSolW(weights.begin(), weights.end()), newSolW(weights.begin(), weights.end());
 	float actualSol = -999999, newSol = -999999;
-	actualSol = KNN.Train(train, train, actualSolW);
+	float actualClassification = -999999, newClassification = -999999, reductionRate, actualAgregation, newAgregation;
+	KNN.Train(train, train, actualSolW, actualClassification, reductionRate, actualAgregation);
 	while(evaluations < 15000 && neighbours < generatedNeighbours){
 		random_shuffle(index.begin(), index.end());
 		improvement = false;
 		for(int i = 0; i < weightsSize && !improvement; ++i){
 			neighboursGeneration(newSolW, index[i]);
 			neighbours++;
-			newSol =  KNN.Train(train, train, newSolW);
+			KNN.Train(train, train, newSolW, newClassification, reductionRate, newAgregation);
 			evaluations++;
-			if(newSol > actualSol){
+			if(newAgregation > actualAgregation){
 				actualSol = newSol;
 				actualSolW = newSolW;
+				actualAgregation = newAgregation;
 				improvement = true;
 				neighbours = 0;
 			}
 		}
 	}
 	weights = actualSolW;
-}
-
-void LocalSearch::runnable(const vector<int> &train, const int &generatedNeighbours, vector<float> &weights){
-	Clasificador KNN(matrixData, vectorLabel, limit);
-	int neighbours = 0, evaluations = 0, weightsSize = weights.size();
-	bool improvement = false;
-	vector<int> index(weightsSize, 0);
-	iota(index.begin(), index.end(), 0);
-	vector<float> actualSolW(weights.begin(), weights.end()), newSolW(weights.begin(), weights.end());
-	float actualSol = -999999, newSol = -999999, actualReduction = -999999, newReduction = -999999;
-	actualSol = KNN.Train(train, train, actualSolW);
-	actualReduction = reduction(actualSolW);
-	while(evaluations < 15000 && neighbours < generatedNeighbours){
-		random_shuffle(index.begin(), index.end());
-		improvement = false;
-		for(int i = 0; i < weightsSize && !improvement; ++i){
-			neighboursGeneration(newSolW, index[i]);
-			neighbours++;
-			newSol =  KNN.Train(train, train, newSolW);
-			evaluations++;
-			newReduction = reduction(newSolW);
-			if(newSol > actualSol && newReduction > actualReduction){
-				actualSol = newSol;
-				actualSolW = newSolW;
-				improvement = true;
-				neighbours = 0;
-				actualReduction = newReduction;
-			}
-		}
-	}
-	weights = actualSolW;
+	rate = actualAgregation;
 }
 
 void LocalSearch::setMatrixData(vector<vector<float>> matrixData){
@@ -113,6 +98,10 @@ void LocalSearch::setLimit(float limit){
 	this->limit = limit;
 }
 
+void LocalSearch::setAlpha(float alpha){
+	this->alpha = alpha;
+}
+
 vector<vector<float>> LocalSearch::getMatrixData(){
 	return matrixData;
 }
@@ -123,4 +112,8 @@ vector<int> LocalSearch::getVectorLabel(){
 
 float LocalSearch::getLimit(){
 	return limit;
+}
+
+float LocalSearch::getAlpha(){
+	return alpha;
 }
