@@ -72,18 +72,20 @@ void EnfriamientoSimulado::run(const vector<int> &train, vector<float> &initSol,
 			newSol = actualSol;
 			componentMutate = aleatorio.randInt(0, numCharact-1);
 			neighboursGeneration(newSol, componentMutate);
-			KNN.Train(train, train, initSol, classificationRate, reductionRate, agregacion);
+			KNN.Train(train, train, newSol, classificationRate, reductionRate, newSolCost);
 			randomNum = aleatorio.rand();
 			difference = newSolCost - actualSolCost;
 			if(difference > 0 || randomNum <= exp((-difference)/(tStart*i))){
 				actualSol = newSol;
 				actualSolCost = newSolCost;
 				actualSuccess++;
-				if(actualSolCost > bestSolCost)
-					bestSol = actualSol, bestSolCost = actualSolCost;
+				if(actualSolCost > bestSolCost){
+					bestSol = actualSol;
+					bestSolCost = actualSolCost;
+				}
 			}
 		}
- 		tStart = tStart / (1.0 + (beta*tStart));
+ 		tStart = tStart / (1.0 + (beta * tStart));
 		numCooling++;
 	}
 	initSol = bestSol;
