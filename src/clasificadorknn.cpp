@@ -129,14 +129,13 @@ int main(int argc, char* argv[]){
 			for(int i = 0; i < conjuntoDatos.getAttributeSize(); ++i){
 				pesos.push_back(aleatorio.rand());
 			}
-			float mu = 0.3 , phi = 0.3;
 			for(int i = 0; i < 5; ++i){
 				Temporizador temp;
 				pesosAux = pesos;
 				cout << "----------------------------------------------" << endl;
 				cout << "Comienzo del procesamiento de la" << endl << "particion " << i+1 << ":" << endl;
 				temp.start();
-				SA.run(conjuntoDatos.getPartitionTrain(i), pesosAux, mu, phi);
+				SA.run(conjuntoDatos.getPartitionTrain(i), pesosAux);
 				temp.stop();
 				KNN.Test(conjuntoDatos.getPartitionTrain(i), conjuntoDatos.getPartitionTest(i), pesosAux, tasa, tasaReduccion, tasaAgregacion);
 				tMedio += temp.getTime();

@@ -52,7 +52,7 @@ EnfriamientoSimulado::EnfriamientoSimulado(vector<vector<float>> matrixData, vec
 	this->aleatorio.set(Seed);
 }
 
-void EnfriamientoSimulado::run(const vector<int> &train, vector<float> &initSol, float mu, float phi){
+void EnfriamientoSimulado::run(const vector<int> &train, vector<float> &initSol){
 	int numCharact = matrixData[0].size(), maxNeighbours = 10 * numCharact, maxSuccess = 0.1 * maxNeighbours;
 	int maxCooling = MAX_EVALS/maxNeighbours, numCooling = 0, actualSuccess = 1, componentMutate, i;
 	float tStart, tEnd = 0.001, actualSolCost, newSolCost,  bestSolCost, classificationRate, reductionRate, agregacion;
@@ -64,7 +64,7 @@ void EnfriamientoSimulado::run(const vector<int> &train, vector<float> &initSol,
 	bestSol = actualSol;
 	actualSolCost = agregacion;
 	bestSolCost = actualSolCost;
-	tStart = (mu * agregacion) / -(log(phi));
+	tStart = (MU * agregacion) / -(log(PHI));
 	beta = (tStart - tEnd) / (maxCooling * tStart * tEnd);
 	while((numCooling < maxCooling) && (actualSuccess > 0)){
 		actualSuccess = 1;

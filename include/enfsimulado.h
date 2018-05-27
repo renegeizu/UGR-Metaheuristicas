@@ -9,6 +9,8 @@
 #include <iostream>
 
 #define MAX_EVALS 15000
+#define MU 0.3
+#define PHI 0.3
 
 using namespace std;
 
@@ -25,7 +27,7 @@ class EnfriamientoSimulado{
 		EnfriamientoSimulado(vector<vector<float>> matrixData, vector<int> vectorLabel, float limit);
 		EnfriamientoSimulado(vector<vector<float>> matrixData, vector<int> vectorLabel, float limit, float alpha);
 		EnfriamientoSimulado(vector<vector<float>> matrixData, vector<int> vectorLabel, float limit, float alpha, unsigned long Seed);
-		void run(const vector<int> &train, vector<float> &initSol, float mu, float phi);
+		void run(const vector<int> &train, vector<float> &initSol);
 		void setMatrixData(vector<vector<float>> matrixData);
 		void setVectorLabel(vector<int> vectorLabel);
 		void setLimit(float limit);
